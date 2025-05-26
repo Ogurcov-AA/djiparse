@@ -1,0 +1,9 @@
+{
+  "baseURL": "http://localhost:5013",
+  "keepAlive": "/keepalive",
+  "keepAliveInterval": "6000",
+  "withCredentials": true,
+  "parse": {
+    "parseTxt": "upload"
+  }
+}
