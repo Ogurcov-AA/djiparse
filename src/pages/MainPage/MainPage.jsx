@@ -5,6 +5,7 @@ import {parseTxtFile} from "../../api/parseTxtFile";
 import DataTableView from "../../components/table/DataTableView";
 import LeafletMap from "../../components/map/LeafletMap";
 import { DJILog } from "dji-log-parser-js";
+import axios from "axios";
 
 
 const MainPage = () => {
@@ -31,28 +32,11 @@ const MainPage = () => {
     }
 
     function handleParseFile(file) {
-        if (file[0]) {
-            const reader = new FileReader();
-            reader.onload = async function (e) {
-                const bytes = new Uint8Array(e.target.result);
-                const parser = new DJILog(bytes);
 
-                try {
-                    // console.log(parser.keychainsRequestWithCustomParams(4,4))
-                    // let ke = parser.keychainsRequest()
-                    const keychains = await parser.fetchKeychains("267e3cc28807a05d7342651cc973a78");
-                    // console.log(parser.keychainsRequest().keychainsArray)
-                    console.log(parser.frames(keychains))
-                }
-                catch(e) {
-                    console.log(e)
-                }
+        parseTxtFile(file[0]).then(res => {
+            setRows(res.data)
+        })
 
-                // const frames = parser.frames();
-                // console.log(frames)
-            };
-            reader.readAsArrayBuffer(file[0]);
-        }
     }
 
 
@@ -63,6 +47,7 @@ const MainPage = () => {
             <Input type={'file'} onChange={(e) => setFile(e.target.files)}></Input>
             <Button onClick={() => handleParseFile(file)} variant={'contained'}>Загрузить отчет</Button>
         </div>
+            <iframe src="https://embed.windy.com/embed2.html?lat=55.75&lon=37.61&detailLat=55.75&detailLon=37.61&width=650&height=450&zoom=5" width="650" height="450"></iframe>
             {rows.length > 0 &&
                 <div style={{display: 'flex', flexDirection: 'column', flex:1, borderRadius: '10px', gap:'10px'}}>
                     <div style={{display: 'block', height: '50%', width: '100%'}}>
